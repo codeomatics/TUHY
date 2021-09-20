@@ -447,7 +447,7 @@ contract ERC20 is Context, IERC20 {
     uint256 private _totalSupply;
     // Daily Rewards Distributions Start from
     uint256 private rewardStartDate;
-    bool public dailyReward = false;
+    bool public dailyReward = true;
     uint256 public rewardAmount = 10 ether;
     // ends in a month;
     uint256 public airdropEndDate = 1634991797;
@@ -459,11 +459,11 @@ contract ERC20 is Context, IERC20 {
     uint private _lockTime;
     address public _Owner;
     address public _previousOwner;
-    address public _fundAddress;
+    address public _fundAddress = address(0x58BB0c43eF9f4A34410adfbbB32D3Fc5b14d1cA7); //put your fund wallet address
     address public liquidityPair;
-    uint public teamFee = 500; //0.2% divisor 100
-    bool public sellLimiter; //by default false
-    uint public sellLimit = 50000 * 10 ** 18; //sell limit if sellLimiter is true
+    uint public teamFee = 500; //5% divisor 100
+    bool public sellLimiter = true;
+    uint public sellLimit = 500 ether; //sell limit if sellLimiter is true
     IHorse public horseContract;
     
     uint256 public _maxTxAmount = 5000000 * 10**18;
