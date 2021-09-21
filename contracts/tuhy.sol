@@ -830,7 +830,7 @@ contract ERC20 is Context, IERC20 {
     function checkDailyReward(uint256 tokenID) public view returns (uint256){
         uint256 lastdate = (lastReward[tokenID] > rewardStartDate) ? lastReward[tokenID] : rewardStartDate;
         uint256 rewardDays = (block.timestamp - lastdate).div(1 days);
-        return rewardDays.mul(10 ether);
+        return rewardDays.mul(rewardAmount);
     }
     
     function claimDailyReward(uint256 tokenID) public {
