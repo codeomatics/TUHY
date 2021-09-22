@@ -813,9 +813,22 @@ contract ERC20 is Context, IERC20 {
     function claimDailyReward(uint256 tokenID) public {
         require(horseContract.ownerOf(tokenID) == msg.sender, "You aren't own this NFT token");
         require(checkDailyReward(tokenID) > 0, "There is no claimable reward");
-        
         _mint(msg.sender, checkDailyReward(tokenID));
+        lastReward[tokenID] = block.timestamp;
         emit claimedDailyReward(tokenID, msg.sender, block.timestamp);
+    }
+    
+    function bulkClaimRewards(uint256[] memory tokenIDs) public {
+        uint256 total;
+        for (uint256 i = 0; i < tokenIDs.length; i++) {
+            require(horseContract.ownerOf(tokenIDs[i]) == msg.sender, "You aren't own this NFT token");
+            total += checkDailyReward(tokenIDs[i]);
+            if(checkDailyReward(tokenIDs[i]) > 0){
+                lastReward[tokenIDs[i]] = block.timestamp;
+            }
+        }
+        require(total > 0, "There is no claimable reward");
+        _mint(msg.sender, total);
     }
 
     /**
