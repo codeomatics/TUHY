@@ -1,0 +1,14 @@
+{
+  "contracts": {},
+  "solidityLibs": {},
+  "proxies": {
+    "openzeppelin-staking/Stake": [
+      {
+        "address": "0x0290FB167208Af455bB137780163b7B7a9a10C16",
+        "kind": "NonProxy",
+        "bytecodeHash": "903d87bac7e31bbc7d3cbdb0c8265f62f9c46c79954d987544ea5ef5a9b5d78f"
+      }
+    ]
+  },
+  "manifestVersion": "2.2"
+}
