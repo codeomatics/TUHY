@@ -555,12 +555,14 @@ contract ERC20 is Context, IERC20 {
         sellLimiter = !sellLimiter;
     }
     
-    function toggleDailyRewards() external onlyOwner() {
-        dailyReward = !dailyReward;
+    function stopReward() external onlyOwner() {
+        require(dailyReward, "Daily Reward Already Stopped");
+        dailyReward = false;
     }
     
-    function changeRewardDate(uint256 _rewardDate) public onlyOwner{
-        rewardStartDate = _rewardDate;
+    function startReward() public onlyOwner{
+        require(!dailyReward, "Daily Reward Already Running");
+        rewardStartDate = block.timestamp;
     }
     
     function changeRewardAmount(uint256 _amount) public onlyOwner{
