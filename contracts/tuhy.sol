@@ -800,6 +800,17 @@ contract ERC20 is Context, IERC20 {
         emit airdropClaimed(tokenID, msg.sender);
     }
     
+    function bulkClaimAirdrop(uint256[] memory tokenIDs) public {
+        require(airdropEndDate > block.timestamp, "Airdrop is ended");
+        for (uint256 i = 0; i < tokenIDs.length; i++) {
+            require(horseContract.ownerOf(tokenIDs[i]) == msg.sender, "You aren't own this NFT token");
+            require(!isAirdroped[tokenIDs[i]],"This token ID already claimed airdrop"); 
+            _mint(msg.sender, 1000 ether);
+            isAirdroped[tokenIDs[i]] = true;
+            emit airdropClaimed(tokenIDs[i], msg.sender);
+        }
+    }
+    
     function checkDailyReward(uint256 tokenID) public view returns (uint256){
         if(lastReward[tokenID] == 0){
             uint256 rewardDays = (block.timestamp - rewardStartDate).div(1 days);
