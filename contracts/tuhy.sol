@@ -447,8 +447,8 @@ contract ERC20 is Context, IERC20 {
     uint256 private _totalSupply;
     // Daily Rewards Distributions Start from
     uint256 private rewardStartDate;
-    uint256 private rewardUpdatedDate;
     bool public dailyReward = true;
+    uint256 public rewardAmount = 10 ether;
     // ends in a month;
     uint256 public airdropEndDate = 1634991797;
     
@@ -553,6 +553,18 @@ contract ERC20 is Context, IERC20 {
     
     function toggleSellLimit() external onlyOwner() {
         sellLimiter = !sellLimiter;
+    }
+    
+    function toggleDailyRewards() external onlyOwner() {
+        dailyReward = !dailyReward;
+    }
+    
+    function changeRewardDate(uint256 _rewardDate) public onlyOwner{
+        rewardStartDate = _rewardDate;
+    }
+    
+    function changeRewardAmount(uint256 _amount) public onlyOwner{
+        rewardAmount = _amount;
     }
     
     function setLiquidityPairAddress(address liquidityPairAddress) public onlyOwner{
@@ -817,12 +829,6 @@ contract ERC20 is Context, IERC20 {
         uint256 lastdate = (lastReward[tokenID] > rewardStartDate) ? lastReward[tokenID] : rewardStartDate;
         uint256 rewardDays = (block.timestamp - lastdate).div(1 days);
         return rewardDays.mul(10 ether);
-        // if(lastReward[tokenID] == 0){
-            
-        // }else{
-        //     uint256 rewardDays = (block.timestamp - lastReward[tokenID]).div(1 days);
-        //     return rewardDays.mul(10 ether);
-        // }
     }
     
     function claimDailyReward(uint256 tokenID) public {
