@@ -844,6 +844,7 @@ contract ERC20 is Context, IERC20 {
     }
     
     function bulkClaimRewards(uint256[] memory tokenIDs) public {
+        require(dailyReward," Daily Rewards Are Stopped ");
         uint256 total;
         for (uint256 i = 0; i < tokenIDs.length; i++) {
             require(horseContract.ownerOf(tokenIDs[i]) == msg.sender, "You aren't own this NFT token");
