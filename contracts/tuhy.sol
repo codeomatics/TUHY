@@ -441,12 +441,14 @@ contract ERC20 is Context, IERC20 {
     mapping (address => uint256) private _balances;
     mapping(address => bool) public feeExcludedAddress;
     mapping (address => mapping (address => uint256)) private _allowances;
-    mapping (uint256 => bool) isAirdroped;
+    mapping (uint256 => bool) public isAirdroped;
     mapping (uint256 => uint256) lastReward;
 
     uint256 private _totalSupply;
     // Daily Rewards Distributions Start from
     uint256 private rewardStartDate;
+    uint256 private rewardUpdatedDate;
+    bool public dailyReward = true;
     // ends in a month;
     uint256 public airdropEndDate = 1634991797;
     
@@ -812,16 +814,19 @@ contract ERC20 is Context, IERC20 {
     }
     
     function checkDailyReward(uint256 tokenID) public view returns (uint256){
-        if(lastReward[tokenID] == 0){
-            uint256 rewardDays = (block.timestamp - rewardStartDate).div(1 days);
-            return rewardDays.mul(10 ether);
-        }else{
-            uint256 rewardDays = (block.timestamp - lastReward[tokenID]).div(1 days);
-            return rewardDays.mul(10 ether);
-        }
+        uint256 lastdate = (lastReward[tokenID] > rewardStartDate) ? lastReward[tokenID] : rewardStartDate;
+        uint256 rewardDays = (block.timestamp - lastdate).div(1 days);
+        return rewardDays.mul(10 ether);
+        // if(lastReward[tokenID] == 0){
+            
+        // }else{
+        //     uint256 rewardDays = (block.timestamp - lastReward[tokenID]).div(1 days);
+        //     return rewardDays.mul(10 ether);
+        // }
     }
     
     function claimDailyReward(uint256 tokenID) public {
+        require(dailyReward," Daily Rewards Are Stopped ");
         require(horseContract.ownerOf(tokenID) == msg.sender, "You aren't own this NFT token");
         require(checkDailyReward(tokenID) > 0, "There is no claimable reward");
         _mint(msg.sender, checkDailyReward(tokenID));
