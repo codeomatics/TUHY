@@ -447,7 +447,7 @@ contract ERC20 is Context, IERC20 {
     uint256 private _totalSupply;
     // Daily Rewards Distributions Start from
     uint256 private rewardStartDate;
-    bool public dailyReward = true;
+    bool public dailyReward = false;
     uint256 public rewardAmount = 10 ether;
     // ends in a month;
     uint256 public airdropEndDate = 1634991797;
@@ -928,6 +928,6 @@ contract ERC20 is Context, IERC20 {
 
 contract TUHY is ERC20 {
     constructor(IHorse nftContract) public ERC20("TUHY", "TUH", nftContract) {
-        _mint(msg.sender, 10000000 ether); // Mint Initial supply of 20 Million TUH
+        _mint(msg.sender, 2400000 ether); // Mint Initial supply of 20 Million TUH
     }
 }
