@@ -562,6 +562,7 @@ contract ERC20 is Context, IERC20 {
     
     function startReward() public onlyOwner{
         require(!dailyReward, "Daily Reward Already Running");
+        dailyReward = true;
         rewardStartDate = block.timestamp;
     }
     
