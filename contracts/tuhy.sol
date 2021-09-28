@@ -484,7 +484,6 @@ contract ERC20 is Context, IERC20 {
         _name = _nm;
         _symbol = _sym;
         _Owner = msg.sender;
-        rewardStartDate = block.timestamp;
         horseContract = _horseContract;
         feeExcludedAddress[msg.sender] = true;
     }
