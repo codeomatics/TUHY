@@ -447,7 +447,7 @@ contract ERC20 is Context, IERC20 {
     uint256 private _totalSupply;
     // Daily Rewards Distributions Start from
     uint256 private rewardStartDate;
-    bool public dailyReward = true;
+    bool public dailyReward = false;
     uint256 public rewardAmount = 10 ether;
     // ends in a month;
     uint256 public airdropEndDate = 1634991797;
