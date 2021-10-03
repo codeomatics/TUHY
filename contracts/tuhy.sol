@@ -449,8 +449,6 @@ contract ERC20 is Context, IERC20 {
     uint256 private rewardStartDate;
     bool public dailyReward = false;
     uint256 public rewardAmount = 10 ether;
-    // ends in a month;
-    uint256 public airdropEndDate = 1634991797;
     
 
     string private _name;
@@ -469,7 +467,6 @@ contract ERC20 is Context, IERC20 {
     uint256 public _maxTxAmount = 5000000 * 10**18;
     
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-    event airdropClaimed(uint256 tokenID, address tokenOwner);
     event claimedDailyReward(uint256 tokenID, address claimer, uint256 timestamp);
     /**
      * @dev Sets the values for {name} and {symbol}, initializes {decimals} with
@@ -584,11 +581,6 @@ contract ERC20 is Context, IERC20 {
     
     function changeFundAddress(address Taddress) public onlyOwner{
         _fundAddress = Taddress;
-    }
-    
-    function changeAirdropEndDate(uint256 endDate) public onlyOwner{
-        require(endDate > block.timestamp,"End Date must be a future timestamp");
-        airdropEndDate = endDate;
     }
     
     function addExcludedAddress(address excludedA) public onlyOwner{
@@ -807,26 +799,6 @@ contract ERC20 is Context, IERC20 {
         _mint(msg.sender, amount);
     }
     
-    function claimAirdrop(uint256 tokenID) public {
-        require(airdropEndDate > block.timestamp, "Airdrop is ended");
-        require(horseContract.ownerOf(tokenID) == msg.sender, "You aren't own this NFT token");
-        require(!isAirdroped[tokenID],"This token ID already claimed airdrop");
-        _mint(msg.sender, 1000 ether);
-        isAirdroped[tokenID] = true;
-        emit airdropClaimed(tokenID, msg.sender);
-    }
-    
-    function bulkClaimAirdrop(uint256[] memory tokenIDs) public {
-        require(airdropEndDate > block.timestamp, "Airdrop is ended");
-        for (uint256 i = 0; i < tokenIDs.length; i++) {
-            require(horseContract.ownerOf(tokenIDs[i]) == msg.sender, "You aren't own this NFT token");
-            require(!isAirdroped[tokenIDs[i]],"This token ID already claimed airdrop"); 
-            _mint(msg.sender, 1000 ether);
-            isAirdroped[tokenIDs[i]] = true;
-            emit airdropClaimed(tokenIDs[i], msg.sender);
-        }
-    }
-    
     function checkDailyReward(uint256 tokenID) public view returns (uint256){
         uint256 lastdate = (lastReward[tokenID] > rewardStartDate) ? lastReward[tokenID] : rewardStartDate;
         uint256 rewardDays = (block.timestamp - lastdate).div(1 days);
@@ -927,7 +899,7 @@ contract ERC20 is Context, IERC20 {
 }
 
 contract TUHY is ERC20 {
-    constructor(IHorse nftContract) public ERC20("TUHY", "TUH", nftContract) {
-        _mint(msg.sender, 2400000 ether); // Mint Initial supply of 20 Million TUH
+    constructor(IHorse nftContract) public ERC20("Horse", "TUH", nftContract) {
+        _mint(msg.sender, 12400000 ether); // Mint Initial supply of 20 Million TUH
     }
 }
