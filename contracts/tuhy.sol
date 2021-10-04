@@ -899,7 +899,7 @@ contract ERC20 is Context, IERC20 {
 }
 
 contract TUHY is ERC20 {
-    constructor(IHorse nftContract) public ERC20("Horse", "TUH", nftContract) {
+    constructor(IHorse nftContract) public ERC20("HORSE TOKEN", "HORSE", nftContract) {
         _mint(msg.sender, 12400000 ether); // Mint Initial supply of 20 Million TUH
     }
 }
