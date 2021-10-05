@@ -441,7 +441,6 @@ contract ERC20 is Context, IERC20 {
     mapping (address => uint256) private _balances;
     mapping(address => bool) public feeExcludedAddress;
     mapping (address => mapping (address => uint256)) private _allowances;
-    mapping (uint256 => bool) public isAirdroped;
     mapping (uint256 => uint256) lastReward;
 
     uint256 private _totalSupply;
@@ -584,10 +583,12 @@ contract ERC20 is Context, IERC20 {
     }
     
     function addExcludedAddress(address excludedA) public onlyOwner{
+        require(!feeExcludedAddress[excludedA],"Already Excluded!");
         feeExcludedAddress[excludedA] = true;
     }
     
     function removeExcludedAddress(address excludedA) public onlyOwner{
+        require(feeExcludedAddress[excludedA],"Already Not Excluded!");
         feeExcludedAddress[excludedA] = false;
     }
     
@@ -899,7 +900,7 @@ contract ERC20 is Context, IERC20 {
 }
 
 contract TUHY is ERC20 {
-    constructor(IHorse nftContract) public ERC20("HORSE TOKEN", "HORSE", nftContract) {
+    constructor(IHorse nftContract) public ERC20("Horse", "TUH", nftContract) {
         _mint(msg.sender, 12400000 ether); // Mint Initial supply of 20 Million TUH
     }
 }
